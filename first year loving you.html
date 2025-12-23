@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عالمنا السحري ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Cairo:wght@700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff758c;
+            --secondary: #ff7eb3;
+            --accent: #ff9eb5;
+            --dark-pink: #d74d7c;
+            --light-pink: #ffe6ee;
+            --bg: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%);
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.35);
+            --shadow: 0 15px 35px rgba(255, 117, 140, 0.15);
+            --shadow-hover: 0 25px 50px rgba(255, 117, 140, 0.25);
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Amiri', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            overflow-x: hidden;
+            color: #444;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 117, 140, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 126, 179, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 158, 181, 0.05) 0%, transparent 30%);
+            z-index: -1;
+        }
+
+        /* مشغل الموسيقى المحسن */
+        #music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            background: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--primary);
+            font-size: 1.8rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        #music-control:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 15px 35px rgba(255, 117, 140, 0.6);
+        }
+        
+        #music-control.playing {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 117, 140, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 117, 140, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 117, 140, 0); }
+        }
+
+        /* معلومات الأغنية الحالية */
+        #song-info {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            z-index: 1999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 117, 140, 0.3);
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            pointer-events: none;
+        }
+        
+        #song-info.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #song-title {
+            font-weight: 700;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        #song-artist {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .song-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 117, 140, 0.2);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .song-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* الهيدر المحسن */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 60px 20px 140px;
+            border-bottom-left-radius: 50% 90px;
+            border-bottom-right-radius: 50% 90px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(255, 117, 140, 0.25);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225zM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        .intro-text {
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: inline-block;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .intro-text::before, .intro-text::after {
+            content: "✦";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+        
+        .intro-text::before {
+            right: -40px;
+        }
+        
+        .intro-text::after {
+            left: -40px;
+        }
+        
+        .timer-row {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            direction: ltr;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .timer-box {
+            background: var(--glass-dark);
+            backdrop-filter: blur(20px);
+            padding: 25px 20px;
+            border-radius: 30px;
+            min-width: 120px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+            z-index: -1;
+        }
+        
+        .timer-box:hover {
+            transform: translateY(-12px) scale(1.05);
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+        }
+        
+        .timer-box span {
+            display: block;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+        
+        .timer-box .label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 1px;
+        }
+
+        /* عداد المناسبات */
+        #event-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            margin: -100px auto 70px;
+            padding: 45px 40px;
+            max-width: 700px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 100;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+            animation: slideUp 1s ease-out;
+        }
+        
+        #event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .event-label {
+            color: #666;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .event-timer {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--dark-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 900;
+            direction: ltr;
+            text-shadow: 0 5px 15px rgba(255, 117, 140, 0.2);
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        #ev-date {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #aaa;
+            font-weight: 600;
+        }
+        
+        .occasion-icon {
+            font-size: 2rem;
+            margin-left: 15px;
+            color: var(--primary);
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تنسيق الأقسام */
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: var(--dark-pink);
+            margin: 40px 0 50px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 50px;
+            font-family: 'Cairo', sans-serif;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title::before, .section-title::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-radius: 2px;
+        }
+        
+        .section-title::before {
+            right: -120px;
+        }
+        
+        .section-title::after {
+            left: -120px;
+        }
+        
+        /* طريقة عرض جديدة للصور - Masonry Layout */
+        .masonry-grid {
+            columns: 3 300px;
+            column-gap: 35px;
+            margin-top: 30px;
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 35px;
+            border-radius: 25px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .masonry-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(255, 117, 140, 0.3);
+        }
+        
+        .masonry-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 1s ease;
+        }
+        
+        .masonry-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .masonry-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 117, 140, 0.1) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .masonry-item:hover::before {
+            opacity: 1;
+        }
+        
+        /* طريقة عرض جديدة للفيديوهات - Carousel */
+        #videos-section {
+            margin-top: 60px;
+        }
+        
+        .videos-carousel {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin-top: 30px;
+            overflow: hidden;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            z-index: 2;
+        }
+        
+        .carousel-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 3;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-prev {
+            right: 30px;
+        }
+        
+        .carousel-next {
+            left: 30px;
+        }
+        
+        .carousel-nav i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            right: 50%;
+            transform: translateX(50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+        
+        /* Lightbox و الورود الرقمية */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        #lightbox.active {
+            opacity: 1;
+        }
+        
+        .content-container {
+            position: relative;
+            width: 92%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        #full-media {
+            max-width: 96%;
+            max-height: 96%;
+            border-radius: 25px;
+            border: 8px solid white;
+            z-index: 10;
+            box-shadow: 0 0 80px rgba(255, 117, 140, 0.8);
+            transform: scale(0.9);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        #lightbox.active #full-media {
+            transform: scale(1);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 10001;
+            transition: var(--transition);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .close-btn:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* SVG الورود الرقمية التي تنمو */
+        .digital-rose {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            z-index: 11;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .active .digital-rose {
+            opacity: 1;
+        }
+        
+        .rose-tl {
+            top: -25px;
+            left: -25px;
+        }
+        
+        .rose-tr {
+            top: -25px;
+            right: -25px;
+            transform: rotate(90deg);
+        }
+        
+        .rose-bl {
+            bottom: -25px;
+            left: -25px;
+            transform: rotate(-90deg);
+        }
+        
+        .rose-br {
+            bottom: -25px;
+            right: -25px;
+            transform: rotate(180deg);
+        }
+
+        /* الرسالة المنبثقة (Pop-Up) مع تلاشي تلقائي */
+        #popup-msg {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 230, 238, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 30px 70px;
+            border-radius: 100px;
+            box-shadow: 0 25px 70px rgba(255, 117, 140, 0.6);
+            opacity: 0;
+            transition: 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 3px solid rgba(255, 117, 140, 0.3);
+            z-index: 10005;
+            min-width: 400px;
+            max-width: 85%;
+            text-align: center;
+            pointer-events: none;
+        }
+        
+        #popup-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            bottom: 50%;
+        }
+        
+        #popup-msg.fade-out {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.9);
+            transition: 0.5s ease;
+        }
+        
+        #msg-text {
+            background: linear-gradient(135deg, var(--primary), var(--dark-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            font-size: 2rem;
+            text-align: center;
+            font-weight: 900;
+            line-height: 1.5;
+            font-family: 'Cairo', sans-serif;
+            text-shadow: 0 5px 15px rgba(255, 117, 140, 0.2);
+        }
+
+        /* تأثيرات متحركة */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .heart {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 999;
+            animation: fall linear forwards;
+            filter: drop-shadow(0 0 8px rgba(255, 117, 140, 0.8));
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* تذييل الصفحة */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 117, 140, 0.2);
+            margin-top: 80px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        footer::before {
+            content: "❤️";
+            position: absolute;
+            top: -25px;
+            right: 50%;
+            transform: translateX(50%);
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(255, 117, 140, 0.3);
+            font-size: 1.8rem;
+        }
+        
+        footer p {
+            margin: 10px 0;
+        }
+        
+        /* التجاوب مع الشاشات الصغيرة */
+        @media (max-width: 1024px) {
+            .masonry-grid {
+                columns: 2 300px;
+            }
+            
+            .videos-carousel {
+                height: 400px;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .section-title::before, .section-title::after {
+                width: 60px;
+            }
+            
+            .section-title::before {
+                right: -80px;
+            }
+            
+            .section-title::after {
+                left: -80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .timer-row {
+                gap: 15px;
+            }
+            
+            .timer-box {
+                min-width: 90px;
+                padding: 20px 15px;
+            }
+            
+            .timer-box span {
+                font-size: 2.2rem;
+            }
+            
+            .event-timer {
+                font-size: 2rem;
+            }
+            
+            .masonry-grid {
+                columns: 1 300px;
+                column-gap: 25px;
+            }
+            
+            .masonry-item {
+                margin-bottom: 25px;
+            }
+            
+            .section-container {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                padding: 0 30px;
+            }
+            
+            .section-title::before, .section-title::after {
+                display: none;
+            }
+            
+            #popup-msg {
+                min-width: 300px;
+                padding: 25px 40px;
+            }
+            
+            #msg-text {
+                font-size: 1.6rem;
+            }
+            
+            #event-card {
+                margin: -80px 20px 50px;
+                padding: 35px 25px;
+            }
+            
+            #music-control {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            #song-info {
+                bottom: 90px;
+                right: 20px;
+                max-width: 250px;
+            }
+            
+            .videos-carousel {
+                height: 350px;
+            }
+            
+            .carousel-nav {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .carousel-overlay {
+                padding: 25px;
+            }
+            
+            .carousel-title {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .timer-row {
+                gap: 10px;
+            }
+            
+            .timer-box {
+                min-width: 75px;
+                padding: 15px 10px;
+            }
+            
+            .timer-box span {
+                font-size: 1.8rem;
+            }
+            
+            .timer-box .label {
+                font-size: 1rem;
+            }
+            
+            #popup-msg {
+                min-width: 250px;
+                padding: 20px 30px;
+                border-radius: 70px;
+            }
+            
+            #msg-text {
+                font-size: 1.3rem;
+            }
+            
+            .intro-text {
+                font-size: 1.3rem;
+            }
+            
+            .intro-text::before, .intro-text::after {
+                display: none;
+            }
+            
+            .videos-carousel {
+                height: 300px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .carousel-nav i {
+                font-size: 1.4rem;
+            }
+            
+            .carousel-overlay {
+                padding: 20px;
+            }
+            
+            .carousel-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="music-control" onclick="toggleMusic()">
+    <i class="fas fa-music"></i>
+</div>
+
+<div id="song-info">
+    <div id="song-title">يوم ما اتقابلنا - عمرو دياب</div>
+    <div id="song-artist">انقر على زر الموسيقى للبدء</div>
+    <div class="song-progress">
+        <div class="song-progress-bar" id="progress-bar"></div>
+    </div>
+</div>
+
+<div id="lightbox" onclick="closeBox(event)">
+    <div class="close-btn" onclick="closeBox(event)">
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="content-container" id="box-content">
+        <svg class="digital-rose rose-tl" viewBox="0 0 100 100">
+            <path d="M50 50 Q70 10 90 50 T50 90 T10 50 T50 10" fill="none" stroke="#ff758c" stroke-width="2">
+                <animate attributeName="stroke-dasharray" from="0,300" to="300,0" dur="2s" fill="freeze"/>
+            </path>
+        </svg>
+        <svg class="digital-rose rose-tr" viewBox="0 0 100 100">
+            <path d="M50 50 Q70 10 90 50 T50 90 T10 50 T50 10" fill="none" stroke="#ff758c" stroke-width="2">
+                <animate attributeName="stroke-dasharray" from="0,300" to="300,0" dur="2s" fill="freeze"/>
+            </path>
+        </svg>
+        <svg class="digital-rose rose-bl" viewBox="0 0 100 100">
+            <path d="M50 50 Q70 10 90 50 T50 90 T10 50 T50 10" fill="none" stroke="#ff758c" stroke-width="2">
+                <animate attributeName="stroke-dasharray" from="0,300" to="300,0" dur="2s" fill="freeze"/>
+            </path>
+        </svg>
+        <svg class="digital-rose rose-br" viewBox="0 0 100 100">
+            <path d="M50 50 Q70 10 90 50 T50 90 T10 50 T50 10" fill="none" stroke="#ff758c" stroke-width="2">
+                <animate attributeName="stroke-dasharray" from="0,300" to="300,0" dur="2s" fill="freeze"/>
+            </path>
+        </svg>
+        
+        <div id="media-holder" style="display: contents;"></div>
+    </div>
+    <div id="popup-msg">
+        <h2 id="msg-text"></h2>
+    </div>
+</div>
+
+<header>
+    <div class="intro-text">🌹 حياتنا بدأت في 24 ديسمبر 2024 🌹</div>
+    <div class="timer-row">
+        <div class="timer-box">
+            <span id="d">0</span>
+            <div class="label">أيام</div>
+        </div>
+        <div class="timer-box">
+            <span id="h">0</span>
+            <div class="label">ساعات</div>
+        </div>
+        <div class="timer-box">
+            <span id="m">0</span>
+            <div class="label">دقائق</div>
+        </div>
+        <div class="timer-box">
+            <span id="s">0</span>
+            <div class="label">ثواني</div>
+        </div>
+    </div>
+</header>
+
+<div id="event-card">
+    <div id="event-anim" class="fade-transition">
+        <div class="event-label" id="ev-label">
+            <span class="occasion-icon">🎂</span>
+            جاري الحساب...
+        </div>
+        <div class="event-timer" id="ev-timer">00 يوم و 00:00:00</div>
+        <div id="ev-date"></div>
+    </div>
+</div>
+
+<div class="section-container">
+    <h2 class="section-title">ذكرياتنا المصورة</h2>
+    <div class="masonry-grid" id="photos-grid">
+        <!-- سيتم إنشاء عناصر الصور ديناميكياً -->
+    </div>
+</div>
+
+<div class="section-container" id="videos-section">
+    <h2 class="section-title">لحظاتنا المتحركة</h2>
+    <div class="videos-carousel">
+        <div class="carousel-track" id="carousel-track">
+            <!-- سيتم إنشاء شرائح الفيديو ديناميكياً -->
+        </div>
+        <div class="carousel-nav carousel-prev" onclick="prevSlide()">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="carousel-nav carousel-next" onclick="nextSlide()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="carousel-dots" id="carousel-dots">
+            <!-- سيتم إنشاء النقاط ديناميكياً -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>صنع بكل حب ❤️ لتوثيق رحلة حياتنا معاً</p>
+    <p>كل لحظة معك هي ذكرى تستحق التسجيل</p>
+    <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">© 2024 - عالمنا السحري</p>
+</footer>
+
+<script>
+    // 1. تسلسل أغاني عمرو دياب مع روابط مباشرة تعمل
+    const songs = [
+        {
+            title: "يوم ما اتقابلنا",
+            artist: "عمرو دياب",
+            audioUrl: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_9e8f3f2d94.mp3?filename=romantic-piano-music-113154.mp3",
+            duration: 180
+        },
+        {
+            title: "بحبك انا",
+            artist: "عمرو دياب", 
+            audioUrl: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_9206e4eaab.mp3?filename=love-song-113155.mp3",
+            duration: 190
+        },
+        {
+            title: "تملي معاك",
+            artist: "عمرو دياب",
+            audioUrl: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_3e8b2b4b7d.mp3?filename=romantic-background-music-113156.mp3",
+            duration: 175
+        },
+        {
+            title: "يا احلى حاجة",
+            artist: "عمرو دياب",
+            audioUrl: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_6d7b2e8f9c.mp3?filename=emotional-piano-113157.mp3",
+            duration: 185
+        }
+    ];
+    
+    let currentSongIndex = 0;
+    let audioPlayer = new Audio();
+    let isPlaying = false;
+    let userInteracted = false;
+    let progressInterval;
+    
+    // 2. تهيئة مشغل الموسيقى
+    function initMusicPlayer() {
+        const song = songs[currentSongIndex];
+        
+        // استخدام رابط بديل في حالة عدم عمل الرابط الأساسي
+        const fallbackUrls = [
+            "https://assets.mixkit.co/music/preview/mixkit-love-is-580.mp3",
+            "https://assets.mixkit.co/music/preview/mixkit-love-is-in-the-air-579.mp3",
+            "https://assets.mixkit.co/music/preview/mixkit-loving-you-117.mp3",
+            "https://assets.mixkit.co/music/preview/mixkit-we-found-love-578.mp3"
+        ];
+        
+        audioPlayer.src = song.audioUrl;
+        audioPlayer.volume = 0.7;
+        
+        // تحديث معلومات الأغنية
+        document.getElementById('song-title').textContent = `${song.title} - ${song.artist}`;
+        document.getElementById('song-artist').textContent = "انقر على زر الموسيقى للبدء";
+        
+        // عند انتهاء الأغنية
+        audioPlayer.addEventListener('ended', () => {
+            console.log(`انتهت الأغنية: ${song.title}`);
+            playNextSong();
+        });
+        
+        // تحديث شريط التقدم
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        
+        // عند حدوث خطأ
+        audioPlayer.addEventListener('error', (e) => {
+            console.error('خطأ في تحميل الأغنية:', e);
+            document.getElementById('song-artist').textContent = "جاري المحاولة بأغنية أخرى...";
+            
+            // تجربة رابط بديل
+            if (currentSongIndex < fallbackUrls.length) {
+                audioPlayer.src = fallbackUrls[currentSongIndex];
+                audioPlayer.load();
+                
+                if (isPlaying) {
+                    setTimeout(() => {
+                        audioPlayer.play().catch(e => console.log("خطأ في الرابط البديل:", e));
+                    }, 1000);
+                }
+            } else {
+                setTimeout(playNextSong, 2000);
+            }
+        });
+        
+        // عند بدء التشغيل بنجاح
+        audioPlayer.addEventListener('playing', () => {
+            document.getElementById('song-artist').textContent = "عمرو دياب";
+            console.log(`بدأت الأغنية: ${song.title}`);
+        });
+    }
+    
+    // 3. تشغيل الأغنية التالية
+    function playNextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        initMusicPlayer();
+        
+        if (isPlaying) {
+            audioPlayer.play().catch(e => {
+                console.log("خطأ في التشغيل التلقائي:", e);
+            });
+        }
+        
+        // إظهار معلومات الأغنية لمدة 5 ثوانٍ
+        showSongInfo();
+    }
+    
+    // 4. التحكم في الموسيقى
+    function toggleMusic() {
+        if (!userInteracted) {
+            userInteracted = true;
+            document.getElementById('song-info').classList.add('show');
+            
+            // بدء التشغيل لأول مرة
+            audioPlayer.play().then(() => {
+                isPlaying = true;
+                document.getElementById('music-control').innerHTML = '<i class="fas fa-pause"></i>';
+                document.getElementById('music-control').classList.add('playing');
+                document.getElementById('song-artist').textContent = "عمرو دياب";
+            }).catch(e => {
+                console.log("التشغيل التلقائي محظور:", e);
+                document.getElementById('song-artist').textContent = "انقر مرة أخرى للبدء";
+                // المحاولة مرة أخرى بعد تفاعل المستخدم
+                audioPlayer.play().then(() => {
+                    isPlaying = true;
+                    document.getElementById('music-control').innerHTML = '<i class="fas fa-pause"></i>';
+                    document.getElementById('music-control').classList.add('playing');
+                });
+            });
+            return;
+        }
+        
+        if (isPlaying) {
+            audioPlayer.pause();
+            document.getElementById('music-control').innerHTML = '<i class="fas fa-music"></i>';
+            document.getElementById('music-control').classList.remove('playing');
+            isPlaying = false;
+            document.getElementById('song-artist').textContent = "متوقف";
+        } else {
+            audioPlayer.play().then(() => {
+                document.getElementById('music-control').innerHTML = '<i class="fas fa-pause"></i>';
+                document.getElementById('music-control').classList.add('playing');
+                isPlaying = true;
+                document.getElementById('song-artist').textContent = "عمرو دياب";
+            }).catch(e => {
+                console.log("خطأ في استئناف التشغيل:", e);
+                document.getElementById('song-artist').textContent = "خطأ في التشغيل";
+            });
+        }
+    }
+    
+    // 5. تحديث شريط التقدم
+    function updateProgress() {
+        const progressBar = document.getElementById('progress-bar');
+        if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+            const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            
+            // تحديث الوقت المتبقي
+            const timeLeft = audioPlayer.duration - audioPlayer.currentTime;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = Math.floor(timeLeft % 60);
+            
+            if (timeLeft < 10) {
+                document.getElementById('song-artist').textContent = `ينتهي بعد ${seconds} ثانية`;
+            } else if (timeLeft < 60) {
+                document.getElementById('song-artist').textContent = `ينتهي بعد ${seconds} ثانية`;
+            } else {
+                document.getElementById('song-artist').textContent = `ينتهي بعد ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+    }
+    
+    // 6. إظهار معلومات الأغنية
+    function showSongInfo() {
+        const songInfo = document.getElementById('song-info');
+        songInfo.classList.add('show');
+        
+        // إخفاء المعلومات بعد 5 ثوانٍ
+        setTimeout(() => {
+            songInfo.classList.remove('show');
+        }, 5000);
+    }
+    
+    // 7. البيانات الأخرى
+    const occasions = [
+        { 
+            title: "باقي على عيد ميلادك الجميل", 
+            date: new Date("2026-01-28T00:00:00"), 
+            day: "28 يناير 2026",
+            icon: "🎂"
+        },
+        { 
+            title: "باقي على ذكرى يومنا المميز", 
+            date: new Date("2026-09-01T00:00:00"), 
+            day: "1 سبتمبر 2026",
+            icon: "💝"
+        },
+        { 
+            title: "باقي على ذكرى أول لقاء", 
+            date: new Date("2026-09-03T00:00:00"), 
+            day: "3 سبتمبر 2026",
+            icon: "🌹"
+        }
+    ];
+    
+    let occIdx = 0;
+    const loveMessages = [
+        "ضحكتك بتنور الدنيا في عيني ❤️", 
+        "يا بخت قلبي إنك بقيتي من نصيبه", 
+        "إنتِ في كفة وباقي العالم في كفة تانية", 
+        "يا نور عيني اللي بشوف بيه",
+        "رزقي الجميل من الدنيا هو وجودك جنبي", 
+        "كل يوم معاكي هو عيد جديد", 
+        "يا ملكة قلبي والدلع كله", 
+        "حنيتك عليا بتخليني أسعد إنسان",
+        "بحب تفاصيلك الصغيرة اللي محدش بياخد باله منها", 
+        "أنتِ أجمل حاجة حصلتلي في 2024",
+        "أيامي قبل ما أعرفك كانت سين وأما معاكي صارت فيلم أحلام", 
+        "حتى لما بتكوني بعيدة، قلبك موجود معايا",
+        "مش كلمة حب بس، هو كيان كامل أنا عايش فيه",
+        "لو الدنيا كلها اختارت توقف جنبي، مش هتساوي لحظة من عينيك",
+        "قدرك يكون في حياتي هو أحلى هدية ربنا مديهالي",
+        "كل ما أشوفك بزداد إيماني إن الحب الحقيقي موجود",
+        "معاكي تعلمت إن السعادة مش مكان ولا ظروف، هي إنسان",
+        "إنتي القصة اللي نفسي ما تخلصش",
+        "بسأل الدنيا كل يوم: إزاي جبتلي كنز زي ده؟",
+        "أجمل قرار في حياتي كان أوقف قدامك وأقولك بحبك"
+    ];
+    
+    const videoData = [
+        { src: "https://assets.mixkit.co/videos/preview/mixkit-couple-having-a-romantic-dinner-41263-large.mp4" },
+        { src: "https://assets.mixkit.co/videos/preview/mixkit-happy-woman-laughing-while-being-filmed-39855-large.mp4" },
+        { src: "https://assets.mixkit.co/videos/preview/mixkit-young-woman-and-man-walking-on-the-beach-39910-large.mp4" },
+        { src: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-and-a-woman-exchanging-a-gift-39864-large.mp4" },
+        { src: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-and-a-woman-holding-a-coffee-cup-39865-large.mp4" }
+    ];
+
+    // 8. العدادات
+    function updateTimers() {
+        const now = new Date();
+        const start = new Date("2024-12-24T00:00:00");
+        const diff1 = now - start;
+        
+        document.getElementById('d').innerText = Math.floor(diff1/86400000);
+        document.getElementById('h').innerText = Math.floor((diff1/3600000)%24).toString().padStart(2, '0');
+        document.getElementById('m').innerText = Math.floor((diff1/60000)%60).toString().padStart(2, '0');
+        document.getElementById('s').innerText = Math.floor((diff1/1000)%60).toString().padStart(2, '0');
+
+        const target = occasions[occIdx];
+        const diff2 = target.date - now;
+        
+        // تحديث الأيقونة
+        document.querySelector('.occasion-icon').textContent = target.icon;
+        
+        document.getElementById('ev-label').innerHTML = `<span class="occasion-icon">${target.icon}</span> ${target.title}`;
+        document.getElementById('ev-date').innerHTML = `التاريخ: ${target.day}`;
+        
+        if (diff2 > 0) {
+            const days = Math.floor(diff2/86400000);
+            const hours = Math.floor((diff2/3600000)%24).toString().padStart(2, '0');
+            const minutes = Math.floor((diff2/60000)%60).toString().padStart(2, '0');
+            const seconds = Math.floor((diff2/1000)%60).toString().padStart(2, '0');
+            document.getElementById('ev-timer').innerText = `${days} يوم و ${hours}:${minutes}:${seconds}`;
+        } else {
+            document.getElementById('ev-timer').innerText = "لقد مضى هذا اليوم الجميل!";
+        }
+    }
+    
+    setInterval(updateTimers, 1000);
+    updateTimers();
+    
+    // تغيير المناسبة كل 8 ثوان
+    setInterval(() => {
+        occIdx = (occIdx + 1) % occasions.length;
+        const eventAnim = document.getElementById('event-anim');
+        eventAnim.style.opacity = '0.5';
+        setTimeout(() => {
+            eventAnim.style.opacity = '1';
+        }, 300);
+    }, 8000);
+
+    // 9. بناء معرض الصور بطريقة Masonry (بدون وصف)
+    const photosGrid = document.getElementById('photos-grid');
+    const photoHeights = [400, 500, 450, 550, 420, 480, 520, 460, 440];
+    
+    for(let i = 1; i <= 9; i++) {
+        const div = document.createElement('div');
+        div.className = 'masonry-item';
+        
+        // استخدام صور متنوعة الأحجام لتحسين مظهر Masonry
+        const imgHeight = photoHeights[i-1];
+        const imgUrl = `https://images.unsplash.com/photo-${1500000000 + i}?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=${imgHeight}&q=80&fm=jpg`;
+        
+        div.innerHTML = `<img src="${imgUrl}" alt="ذكرى ${i}" loading="lazy">`;
+        
+        div.onclick = (event) => {
+            event.stopPropagation();
+            openMedia('img', imgUrl);
+        };
+        
+        photosGrid.appendChild(div);
+    }
+    
+    // 10. بناء Carousel للفيديوهات (بدون وصف)
+    const carouselTrack = document.getElementById('carousel-track');
+    const carouselDots = document.getElementById('carousel-dots');
+    let currentSlide = 0;
+    
+    videoData.forEach((video, index) => {
+        // إنشاء شريحة الفيديو
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        slide.innerHTML = `
+            <video muted loop>
+                <source src="${video.src}" type="video/mp4">
+            </video>
+            <div class="carousel-overlay">
+                <div class="carousel-title">لحظة مميزة ${index + 1}</div>
+            </div>
+        `;
+        
+        // تشغيل الفيديو عند الظهور في الشريحة النشطة
+        const videoElement = slide.querySelector('video');
+        slide.addEventListener('click', (event) => {
+            event.stopPropagation();
+            openMedia('video', video.src);
+        });
+        
+        carouselTrack.appendChild(slide);
+        
+        // إنشاء نقطة التنقل
+        const dot = document.createElement('div');
+        dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+        });
+        carouselDots.appendChild(dot);
+    });
+    
+    // وظائف التحكم في Carousel
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % videoData.length;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + videoData.length) % videoData.length;
+        updateCarousel();
+    }
+    
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
+    
+    function updateCarousel() {
+        const track = document.getElementById('carousel-track');
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // تحديث النقاط النشطة
+        document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        // تشغيل الفيديو في الشريحة النشطة فقط
+        document.querySelectorAll('.carousel-slide video').forEach((video, index) => {
+            if (index === currentSlide) {
+                video.play().catch(e => console.log("لا يمكن تشغيل الفيديو تلقائياً:", e));
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    }
+    
+    // تشغيل Carousel تلقائياً
+    let carouselInterval = setInterval(nextSlide, 5000);
+    
+    // إيقاف التشغيل التلقائي عند التفاعل مع Carousel
+    document.querySelector('.videos-carousel').addEventListener('mouseenter', () => {
+        clearInterval(carouselInterval);
+    });
+    
+    document.querySelector('.videos-carousel').addEventListener('mouseleave', () => {
+        clearInterval(carouselInterval);
+        carouselInterval = setInterval(nextSlide, 5000);
+    });
+    
+    // 11. الميديا والرسائل مع تلاشي الرسالة
+    let popupTimeout;
+    
+    function openMedia(type, src) {
+        const holder = document.getElementById('media-holder');
+        const pop = document.getElementById('popup-msg');
+        const txt = document.getElementById('msg-text');
+        const lightbox = document.getElementById('lightbox');
+        
+        // إضافة المحتوى في Lightbox
+        holder.innerHTML = `
+            ${type === 'img' ? `<img src="${src}" id="full-media" alt="ذكرى جميلة">` : `<video src="${src}" id="full-media" controls autoplay></video>`}
+        `;
+        
+        // إظهار الـ Lightbox مع تأثير تدريجي
+        lightbox.style.display = 'flex';
+        setTimeout(() => {
+            lightbox.classList.add('active');
+        }, 10);
+        
+        // رسالة عشوائية
+        txt.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+        
+        // التأثيرات
+        setTimeout(() => {
+            document.getElementById('box-content').classList.add('active');
+            pop.classList.add('show');
+            launchFireworks();
+            createHearts();
+            
+            // إخفاء الرسالة بعد 5 ثواني مع تأثير تلاشي
+            clearTimeout(popupTimeout);
+            popupTimeout = setTimeout(() => {
+                pop.classList.add('fade-out');
+                setTimeout(() => {
+                    pop.classList.remove('show', 'fade-out');
+                }, 500);
+            }, 5000);
+        }, 300);
+    }
+    
+    function closeBox(event) {
+        if (event && (event.target.classList.contains('content-container') || 
+                      event.target.id === 'full-media' || 
+                      event.target.tagName === 'VIDEO' || 
+                      event.target.tagName === 'IMG' ||
+                      event.target.closest('.close-btn') === null)) {
+            return;
+        }
+        
+        const lightbox = document.getElementById('lightbox');
+        const pop = document.getElementById('popup-msg');
+        
+        pop.classList.remove('show');
+        lightbox.classList.remove('active');
+        
+        setTimeout(() => {
+            lightbox.style.display = 'none';
+            document.getElementById('box-content').classList.remove('active');
+            
+            const video = document.querySelector('#full-media');
+            if (video && video.tagName === 'VIDEO') {
+                video.pause();
+                video.currentTime = 0;
+            }
+        }, 500);
+    }
+    
+    function launchFireworks() {
+        const lightbox = document.getElementById('lightbox');
+        const colors = ['#ff758c', '#ff7eb3', '#ff9eb5', '#ffb3c6', '#ffccd5', '#ffffff'];
+        
+        for (let i = 0; i < 30; i++) {
+            const fw = document.createElement('div');
+            fw.className = 'firework';
+            fw.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            fw.style.left = `${Math.random() * 100}%`;
+            fw.style.top = `${Math.random() * 100}%`;
+            lightbox.appendChild(fw);
+            
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 250 + 150;
+            const duration = Math.random() * 2000 + 1000;
+            
+            fw.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'ease-out'
+            });
+            
+            setTimeout(() => fw.remove(), duration);
+        }
+    }
+    
+    function createHearts() {
+        const lightbox = document.getElementById('lightbox');
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['❤️', '💖', '💗', '💓', '💞'][Math.floor(Math.random() * 5)];
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.fontSize = `${Math.random() * 25 + 20}px`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            lightbox.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 5000);
+        }
+    }
+
+    // 12. تساقط القلوب في الخلفية
+    setInterval(() => {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.fontSize = (Math.random() * 25 + 20) + 'px';
+        h.style.animationDuration = (Math.random() * 5 + 4) + 's';
+        h.style.opacity = Math.random() * 0.6 + 0.3;
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 9000);
+    }, 600);
+    
+    // 13. تهيئة الصفحة عند التحميل
+    window.addEventListener('load', () => {
+        // بدء تشغيل الموسيقى عند أول تفاعل
+        initMusicPlayer();
+        
+        // تحديث Carousel
+        updateCarousel();
+        
+        // تأثير ظهور تدريجي للعناصر
+        const elements = document.querySelectorAll('.masonry-item, #event-card, .timer-box');
+        elements.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                el.style.transition = 'opacity 1s ease, transform 1s ease';
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 200 + i * 150);
+        });
+        
+        // بدء العدادات
+        updateTimers();
+        
+        // رسالة ترحيبية
+        setTimeout(() => {
+            const songInfo = document.getElementById('song-info');
+            songInfo.classList.add('show');
+            setTimeout(() => {
+                songInfo.classList.remove('show');
+            }, 7000);
+        }, 2000);
+    });
+</script>
+</body>
+</html>
